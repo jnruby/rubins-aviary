@@ -6,22 +6,22 @@
 <title>Rubin's Virtual Aviary — Messiaen's Des canyons aux étoiles…</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,500;1,300&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cutive+Mono&family=Inter:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root{
   --bg:#14110f; --panel:#1c1815; --line:#2f2823;
   --ink:#ece5da; --dim:#a2968a; --faint:#6e645b;
   --clay:#c96442; --gold:#d9a441;
-  --sans:'Inter',system-ui,sans-serif; --serif:'Cormorant Garamond',Georgia,serif;
+  --sans:'Inter',system-ui,sans-serif; --mono:'Cutive Mono','Courier New',monospace;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.6;
   background-image:radial-gradient(circle at 20% 8%, rgba(217,164,65,.05), transparent 55%);}
 .wrap{max-width:1180px;margin:0 auto;padding:0 24px}
 header{padding:80px 0 44px;border-bottom:1px solid var(--line)}
-.kicker{font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--clay);margin-bottom:18px}
-h1{font-family:var(--serif);font-weight:300;font-size:clamp(2.4rem,5.5vw,4rem);line-height:1.08;letter-spacing:-.01em}
-h1 em{font-style:italic;color:var(--gold)}
+.kicker{font-family:var(--mono);font-size:12px;letter-spacing:.28em;text-transform:uppercase;color:var(--clay);margin-bottom:20px}
+h1{font-family:var(--mono);font-weight:400;font-size:clamp(1.7rem,4.4vw,3.2rem);line-height:1.22;letter-spacing:-.01em}
+h1 em{font-style:normal;color:var(--gold)}
 .lede{max-width:56ch;margin-top:20px;color:var(--dim);font-size:16px}
 .controls{position:sticky;top:0;z-index:10;background:rgba(20,17,15,.94);
   backdrop-filter:blur(10px);border-bottom:1px solid var(--line);padding:18px 0}
@@ -50,11 +50,11 @@ h1 em{font-style:italic;color:var(--gold)}
   background-size:200% 100%;animation:shimmer 1.3s infinite}
 @keyframes shimmer{to{background-position:-200% 0}}
 .thumb-ph{font-size:26px;opacity:.5;filter:grayscale(.3)}
-.score{font-family:var(--serif);font-size:1.42rem;font-weight:500;line-height:1.2}
+.score{font-family:var(--mono);font-size:1.12rem;font-weight:400;line-height:1.28;letter-spacing:-.01em}
 .eng{font-size:14.5px;color:var(--ink)}
 .sci{font-style:italic;color:var(--faint);font-size:13px}
 .tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:2px}
-.tag{font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--gold);
+.tag{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);
   border:1px solid rgba(217,164,65,.28);border-radius:4px;padding:2px 7px}
 .links{display:flex;gap:8px;margin-top:auto;padding-top:14px;flex-wrap:wrap}
 .btn{flex:1;min-width:118px;text-align:center;text-decoration:none;font-size:12.5px;font-weight:500;
@@ -62,7 +62,7 @@ h1 em{font-style:italic;color:var(--gold)}
 .btn:hover{border-color:var(--clay);color:var(--clay)}
 .btn.listen{border-color:rgba(201,100,66,.4);color:var(--clay)}
 .btn.listen:hover{background:var(--clay);color:#14110f;border-color:var(--clay)}
-.empty{grid-column:1/-1;text-align:center;color:var(--faint);padding:70px 0;font-family:var(--serif);font-size:1.4rem}
+.empty{grid-column:1/-1;text-align:center;color:var(--faint);padding:70px 0;font-family:var(--mono);font-size:1.15rem}
 footer{border-top:1px solid var(--line);padding:34px 0 60px;color:var(--faint);font-size:13px}
 footer a{color:var(--dim)}
 .copyright{margin-top:14px;font-size:12px;color:var(--faint)}
@@ -94,11 +94,14 @@ footer a{color:var(--dim)}
 <script>
 const D=[
 ["Alala (Hawaii)","Hawaiian crow or ʻalalā","Corvus hawaiiensis","https://search.macaulaylibrary.org/catalog?taxonCode=hawcro&mediaType=audio","https://en.wikipedia.org/wiki/Hawaiian_crow"],
+["Aoji (Japan)","Black-faced bunting","Emberiza spodocephala","https://xeno-canto.org/species/Emberiza-spodocephala","https://en.wikipedia.org/wiki/Black-faced_bunting"],
 ["Apapane (Hawaii)","ʻapapane","Himatione sanguinea","https://www.hbw.com/ibc/video/apapane-himatione-sanguinea/adult-tree-foraging-and-giving-soft-calls","https://en.wikipedia.org/wiki/%CA%BBApapane"],
 ["Boubou (South Africa)","Tropical boubou","Laniarius major","https://www.youtube.com/watch?v=edT9fTUnxbY","https://en.wikipedia.org/wiki/Tropical_boubou"],
 ["Boubou shrike (Africa)","Southern boubou","Laniarius ferrugineus","https://www.youtube.com/watch?v=bOiomW1EiFA","https://en.wikipedia.org/wiki/Southern_boubou"],
 ["Bruant à gorge blanche (Utah)","White-throated sparrow","Zonotrichia albicollis","https://www.allaboutbirds.org/guide/White-throated_Sparrow/","https://en.wikipedia.org/wiki/White-throated_sparrow"],
 ["Bruant à nuque grise (USA)","American tree sparrow (maybe?)","Spizelloides arborea","https://www.allaboutbirds.org/guide/American_Tree_Sparrow","https://en.wikipedia.org/wiki/American_tree_sparrow"],
+["Bruant renard (Utah)","Fox sparrow","Passerella iliaca","https://www.allaboutbirds.org/guide/Fox_Sparrow","https://en.wikipedia.org/wiki/Fox_sparrow"],
+["Buse à queue rousse (Utah)","Red-tailed hawk","Buteo jamaicensis","https://www.allaboutbirds.org/guide/Red-tailed_Hawk","https://en.wikipedia.org/wiki/Red-tailed_hawk"],
 ["Casse-noix de Clark (Utah)","Clark's nutcracker","Nucifraga columbiana","https://www.allaboutbirds.org/guide/Clarks_Nutcracker","https://en.wikipedia.org/wiki/Clark%27s_nutcracker"],
 ["Chouette des terriers (USA)","Burrowing owl","Athene cunicularia","https://www.allaboutbirds.org/guide/Burrowing_Owl/","https://en.wikipedia.org/wiki/Burrowing_owl"],
 ["Cossyphe d'Heuglin (South Africa)","White-browed robin-chat","Cossypha heuglini","https://www.youtube.com/watch?v=kxTlYsCJP_s","https://en.wikipedia.org/wiki/White-browed_robin-chat"],
@@ -111,13 +114,14 @@ const D=[
 ["Grive des bois (USA)","Wood thrush","Hylocichla mustelina","https://www.allaboutbirds.org/guide/Wood_Thrush","https://en.wikipedia.org/wiki/Wood_thrush"],
 ["Grive ermite (USA)","Hermit thrush","Catharus guttatus","https://www.allaboutbirds.org/guide/Hermit_Thrush","https://en.wikipedia.org/wiki/Hermit_thrush"],
 ["Grive grise (Australia)","Grey shrikethrush","Colluricincla harmonica","https://www.youtube.com/watch?v=gBQxs2TRLo8","https://en.wikipedia.org/wiki/Grey_shrikethrush"],
-["Grive rousse (Wyoming)","Red-throated thrush","Turdus ruficollis","https://www.youtube.com/watch?v=hr_Ze0LVcMA","https://en.wikipedia.org/wiki/Red-throated_thrush"],
+["Grive rousse (USA)","Brown thrasher","Toxostoma rufum","https://www.allaboutbirds.org/guide/Brown_Thrasher","https://en.wikipedia.org/wiki/Brown_thrasher"],
 ["Guiraca bleu (Utah)","Blue grosbeak","Passerina caerulea","https://www.allaboutbirds.org/guide/Blue_Grosbeak/","https://en.wikipedia.org/wiki/Blue_grosbeak"],
-["Gymnorhize flûteur à des blanc (Australia)","Australian magpie","Gymnorhina tibicen","https://wildambience.com/wildlife-sounds/australian-magpie/","https://en.wikipedia.org/wiki/Australian_magpie"],
+["Gymnorhine flûteur à dos blanc (Australia)","Australian magpie (white-backed)","Gymnorhina tibicen","https://wildambience.com/wildlife-sounds/australian-magpie/","https://en.wikipedia.org/wiki/Australian_magpie"],
 ["Hoamy (grive-geai de Pékin) (China)","Chinese hwamei or melodious laughingthrush","Leucodioptron canorus (formerly Garrulax canorus)","https://www.youtube.com/watch?v=wBlI2Gw6imE","https://en.wikipedia.org/wiki/Chinese_hwamei"],
 ["Kibitaki (Japan)","Narcissus flycatcher","Ficedula narcissina","https://search.macaulaylibrary.org/catalog?taxonCode=narfly2&mediaType=audio","https://en.wikipedia.org/wiki/Narcissus_flycatcher"],
 ["Leiothrix (China)","Red-billed leiothrix or Pekin robin","Leiothrix lutea","https://www.youtube.com/watch?v=DEeuCU-0nP0","https://en.wikipedia.org/wiki/Red-billed_Leiothrix"],
-["Merle bleu des Montagnes (Western USA)","Western bluebird","Sialia mexicana","https://www.allaboutbirds.org/guide/Western_Bluebird","https://en.wikipedia.org/wiki/Western_bluebird"],
+["Martinet à gorge blanche (Utah)","White-throated swift","Aeronautes saxatalis","https://www.allaboutbirds.org/guide/White-throated_Swift","https://en.wikipedia.org/wiki/White-throated_swift"],
+["Merle bleu des Montagnes (Western USA)","Mountain bluebird","Sialia currucoides","https://www.allaboutbirds.org/guide/Mountain_Bluebird","https://en.wikipedia.org/wiki/Mountain_bluebird"],
 ["Merle de Swainson (USA)","Swainson's thrush","Catharus ustulatus","https://www.allaboutbirds.org/guide/Swainsons_Thrush","https://en.wikipedia.org/wiki/Swainson%27s_thrush"],
 ["Merle migrateur (USA)","American robin","Turdus migratorius","https://www.allaboutbirds.org/guide/American_Robin","https://en.wikipedia.org/wiki/American_robin"],
 ["Merle noir à tête jaune (Utah)","Yellow-headed blackbird","Xanthocephalus xanthocephalus","https://www.allaboutbirds.org/guide/Yellow-headed_Blackbird","https://en.wikipedia.org/wiki/Yellow-headed_Blackbird"],
@@ -128,9 +132,9 @@ const D=[
 ["Omao (Hawaii)","ʻōmaʻo or Hawaiian thrush","Myadestes obscurus","https://www.youtube.com/watch?v=52VsMtjueT4","https://en.wikipedia.org/wiki/%E2%80%98%C5%8Cma%E2%80%99o"],
 ["Pape indigo (Utah)","Indigo bunting","Passerina cyanea","https://www.allaboutbirds.org/guide/Indigo_Bunting","https://en.wikipedia.org/wiki/Indigo_bunting"],
 ["Pape Lazuli (USA)","Lazuli bunting","Passerina amoena","https://www.allaboutbirds.org/guide/Lazuli_Bunting","https://en.wikipedia.org/wiki/Lazuli_bunting"],
-["Pic flèche rouge (Utah)","Red-bellied woodpecker (maybe?)","Melanerpes carolinus","https://www.allaboutbirds.org/guide/Red-bellied_Woodpecker","https://en.wikipedia.org/wiki/Red-bellied_woodpecker"],
+["Pic flèche rouge (Utah)","Northern flicker, red-shafted","Colaptes auratus (cafer)","https://www.allaboutbirds.org/guide/Northern_Flicker","https://en.wikipedia.org/wiki/Northern_flicker"],
 ["Pic maculé (Utah, Nevada)","Yellow-bellied sapsucker","Sphyrapicus varius","https://www.allaboutbirds.org/guide/Yellow-bellied_Sapsucker","https://en.wikipedia.org/wiki/Yellow-bellied_sapsucker"],
-["Pic-grièche à plastron noir (South Africa)","Ring ouzel","Turdus torquatus","https://www.british-birdsongs.uk/ring-ouzel/","https://en.wikipedia.org/wiki/Ring_ouzel"],
+["Pie-grièche à plastron noir (South Africa)","Bokmakierie","Telophorus zeylonus","https://xeno-canto.org/species/Telophorus-zeylonus","https://en.wikipedia.org/wiki/Bokmakierie"],
 ["Pinson à ailes baies (USA)","Vesper sparrow","Pooecetes gramineus","https://www.allaboutbirds.org/guide/Vesper_Sparrow","https://en.wikipedia.org/wiki/Vesper_sparrow"],
 ["Pyrrhuloxia (Arizona)","Pyrrhuloxia or desert cardinal","Cardinalis sinuatus","https://www.allaboutbirds.org/guide/Pyrrhuloxia","https://en.wikipedia.org/wiki/Pyrrhuloxia"],
 ["Roselin de Cassin (Utah)","Cassin's finch","Haemorhous cassinii","https://www.allaboutbirds.org/guide/Cassins_Finch","https://en.wikipedia.org/wiki/Cassin%27s_finch"],
@@ -139,20 +143,21 @@ const D=[
 ["Sirli du désert (Sahara)","Greater hoopoe lark","Alaemon alaudipes","http://www.oiseaux.net/birds/greater.hoopoe-lark.html","https://en.wikipedia.org/wiki/Greater_hoopoe-lark"],
 ["Solitaire de Townsend (Western USA)","Townsend's solitaire","Myadestes townsendi","https://www.allaboutbirds.org/guide/Townsends_Solitaire/overview","https://en.wikipedia.org/wiki/Townsend%27s_solitaire"],
 ["Stournelle des prés de l'Ouest (Utah)","Western meadowlark","Sturnella neglecta","https://www.allaboutbirds.org/guide/Western_Meadowlark","https://en.wikipedia.org/wiki/Western_meadowlark"],
-["Tangara de l'Ouest (Utah)","Western bluebird","Sialia mexicana","https://www.allaboutbirds.org/guide/Western_Bluebird/overview","https://en.wikipedia.org/wiki/Western_bluebird"],
-["Téléphone Tschagra (Morocco)","Black-crowned tchagra","Chagra senegalus","https://en.wikipedia.org/wiki/Black-crowned_tchagra","https://en.wikipedia.org/wiki/Black-crowned_tchagra"],
+["Tangara de l'Ouest (Utah)","Western tanager","Piranga ludoviciana","https://www.allaboutbirds.org/guide/Western_Tanager","https://en.wikipedia.org/wiki/Western_tanager"],
+["Téléphone Tschagra (Morocco)","Black-crowned tchagra","Tchagra senegalus","https://xeno-canto.org/species/Tchagra-senegalus","https://en.wikipedia.org/wiki/Black-crowned_tchagra"],
 ["Tetras centrocerque (Nevada, Utah)","Greater sage-grouse","Centrocercus urophasianus","https://www.allaboutbirds.org/guide/Greater_Sage-Grouse","https://en.wikipedia.org/wiki/Greater_sage-grouse"],
-["Tetras obscur (Utah)","Dusky grouse (maybe?)","Dendragapus obscurus","https://www.youtube.com/watch?v=OLclp7rz2AM","https://en.wikipedia.org/wiki/Dusky_grouse"],
+["Tetras obscur (Utah)","Dusky grouse","Dendragapus obscurus","https://www.youtube.com/watch?v=OLclp7rz2AM","https://en.wikipedia.org/wiki/Dusky_grouse"],
 ["Tohi à queue verte (Idaho, Montana)","Green-tailed towhee","Pipilo chlorurus","https://www.allaboutbirds.org/guide/Green-tailed_Towhee/","https://en.wikipedia.org/wiki/Green-tailed_towhee"],
 ["Tourterelle à ailes blanches (Utah)","White-winged dove","Zenaida asiatica","https://www.allaboutbirds.org/guide/White-winged_Dove","https://en.wikipedia.org/wiki/White-winged_dove"],
 ["Troglodyte de la Caroline (USA)","Carolina wren","Thryothorus ludovicianus","https://www.allaboutbirds.org/guide/Carolina_Wren","https://en.wikipedia.org/wiki/Carolina_wren"],
 ["Troglodyte des cactus (Western USA)","Cactus wren","Campylorhynchus brunneicapillus","https://www.allaboutbirds.org/guide/Cactus_Wren/","https://en.wikipedia.org/wiki/Cactus_wren"],
 ["Troglodyte des canyons (Idaho, Montana)","Canyon wren","Catherpes mexicanus","https://www.allaboutbirds.org/guide/Canyon_Wren","https://en.wikipedia.org/wiki/Canyon_wren"],
+["Troupiale à capuchon orange (USA)","Hooded oriole","Icterus cucullatus","https://www.allaboutbirds.org/guide/Hooded_Oriole","https://en.wikipedia.org/wiki/Hooded_oriole"],
 ["Troupiale de Baltimore (USA)","Baltimore oriole","Icterus galbula","https://www.allaboutbirds.org/guide/Baltimore_Oriole","https://en.wikipedia.org/wiki/Baltimore_oriole"],
 ["Troupiale de Bullock (Western USA)","Bullock's oriole","Icterus bullockii","https://www.allaboutbirds.org/guide/Bullocks_Oriole","https://en.wikipedia.org/wiki/Bullock%27s_oriole"],
 ["Troupiale de Scott (Arizona, Utah, Nevada)","Scott's oriole","Icterus parisorum","https://www.allaboutbirds.org/guide/Scotts_Oriole/","https://en.wikipedia.org/wiki/Scott%27s_oriole"],
 ["Troupiale des vergers (USA)","Orchard oriole","Icterus spurius","https://www.allaboutbirds.org/guide/Orchard_Oriole","https://en.wikipedia.org/wiki/Orchard_oriole"],
-["Troupiale Lichenstein (Western USA)","Altamira oriole","Icterus gularis","https://search.macaulaylibrary.org/catalog?taxonCode=altori&mediaType=audio","https://en.wikipedia.org/wiki/Altamira_oriole"],
+["Troupiale de Lichtenstein (Western USA)","Altamira oriole","Icterus gularis","https://search.macaulaylibrary.org/catalog?taxonCode=altori&mediaType=audio","https://en.wikipedia.org/wiki/Altamira_oriole"],
 ["Viréo à tête noire (Western USA)","Black-capped vireo","Vireo atricapilla","https://www.allaboutbirds.org/guide/Black-capped_Vireo","https://en.wikipedia.org/wiki/Black-capped_vireo"],
 ["Viréo de Bell (Western USA)","Bell's vireo","Vireo bellii","https://www.allaboutbirds.org/guide/Bells_Vireo/","https://en.wikipedia.org/wiki/Bell%27s_vireo"],
 ["Viréo Gris (Utah)","Gray vireo","Vireo vicinior","https://www.bird-sounds.net/gray-vireo/","https://en.wikipedia.org/wiki/Gray_vireo"],
@@ -169,6 +174,7 @@ const src=u=>{
   if(u.includes("british-birdsongs")) return "British Birdsongs";
   if(u.includes("bird-sounds")) return "Bird-sounds";
   if(u.includes("oiseaux.net")) return "Oiseaux.net";
+  if(u.includes("xeno-canto")) return "Xeno-canto";
   if(u.includes("hbw.com")) return "HBW";
   return "Listen";
 };
