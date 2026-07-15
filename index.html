@@ -40,6 +40,16 @@ h1 em{font-style:italic;color:var(--gold)}
 .card{background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:20px 21px;
   display:flex;flex-direction:column;gap:9px;transition:.18s}
 .card:hover{border-color:#463a31;transform:translateY(-2px)}
+.chead{display:flex;gap:15px;align-items:flex-start}
+.cmeta{display:flex;flex-direction:column;gap:5px;min-width:0}
+.thumb{flex-shrink:0;width:92px;height:92px;border-radius:9px;overflow:hidden;
+  background:var(--bg) center/cover no-repeat;border:1px solid var(--line);
+  display:flex;align-items:center;justify-content:center;position:relative}
+.thumb.loading::after{content:"";position:absolute;inset:0;
+  background:linear-gradient(100deg,transparent 30%,rgba(217,164,65,.08) 50%,transparent 70%);
+  background-size:200% 100%;animation:shimmer 1.3s infinite}
+@keyframes shimmer{to{background-position:-200% 0}}
+.thumb-ph{font-size:26px;opacity:.5;filter:grayscale(.3)}
 .score{font-family:var(--serif);font-size:1.42rem;font-weight:500;line-height:1.2}
 .eng{font-size:14.5px;color:var(--ink)}
 .sci{font-style:italic;color:var(--faint);font-size:13px}
@@ -164,7 +174,8 @@ const src=u=>{
 const birds=D.map(([score,eng,sci,song,info])=>{
   const m=score.match(/\(([^)]+)\)\s*$/);
   const regions=m?m[1].split(",").map(s=>s.trim()):[];
-  return{score:score.replace(/\s*\([^)]+\)\s*$/,""),eng,sci,song,info,regions,
+  const wiki=(info.split("/wiki/")[1]||"").split("#")[0];
+  return{score:score.replace(/\s*\([^)]+\)\s*$/,""),eng,sci,song,info,regions,wiki,
     hay:(score+" "+eng+" "+sci).toLowerCase()};
 });
 
@@ -186,15 +197,51 @@ function render(){
   count.textContent=`${out.length} of ${birds.length}`;
   grid.innerHTML=out.length?out.map(b=>`
     <article class="card">
-      <div class="score">${esc(b.score)}</div>
-      <div class="eng">${esc(b.eng)}</div>
-      <div class="sci">${esc(b.sci)}</div>
+      <div class="chead">
+        <a class="thumb loading" href="${esc(b.info)}" target="_blank" rel="noopener"
+           data-wiki="${esc(b.wiki)}" aria-label="Photo of ${esc(b.eng)}"><span class="thumb-ph">🪶</span></a>
+        <div class="cmeta">
+          <div class="score">${esc(b.score)}</div>
+          <div class="eng">${esc(b.eng)}</div>
+          <div class="sci">${esc(b.sci)}</div>
+        </div>
+      </div>
       <div class="tags">${b.regions.map(r=>`<span class="tag">${esc(r)}</span>`).join("")}</div>
       <div class="links">
         <a class="btn listen" href="${esc(b.song)}" target="_blank" rel="noopener">♪ ${src(b.song)}</a>
         <a class="btn" href="${esc(b.info)}" target="_blank" rel="noopener">${src(b.info)}</a>
       </div>
     </article>`).join(""):`<p class="empty">No birds match that search.</p>`;
+  loadThumbs();
+}
+
+// Lazy-load each bird's lead photo from its Wikipedia article.
+const thumbCache=new Map();
+let thumbObs;
+function loadThumbs(){
+  const els=grid.querySelectorAll(".thumb[data-wiki]");
+  if(!("IntersectionObserver" in window)){els.forEach(setThumb);return;}
+  thumbObs=thumbObs||new IntersectionObserver((ents,obs)=>{
+    ents.forEach(en=>{if(en.isIntersecting){obs.unobserve(en.target);setThumb(en.target);}});
+  },{rootMargin:"250px"});
+  els.forEach(el=>thumbObs.observe(el));
+}
+function setThumb(el){
+  const slug=el.dataset.wiki;
+  const apply=url=>{
+    if(!url){el.classList.remove("loading");return;}
+    const img=new Image();
+    img.onload=()=>{el.style.backgroundImage=`url("${url}")`;el.classList.remove("loading");
+      const ph=el.querySelector(".thumb-ph");if(ph)ph.remove();};
+    img.onerror=()=>el.classList.remove("loading");
+    img.src=url;
+  };
+  if(!slug)return apply(null);
+  if(thumbCache.has(slug))return apply(thumbCache.get(slug));
+  fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${slug}`)
+    .then(r=>r.ok?r.json():null)
+    .then(d=>{const url=(d&&d.thumbnail&&d.thumbnail.source)||null;thumbCache.set(slug,url);apply(url);})
+    .catch(()=>{thumbCache.set(slug,null);apply(null);});
 }
 
 q.addEventListener("input",render);
