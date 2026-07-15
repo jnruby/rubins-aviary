@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rubin's Virtual Aviary — Messiaen's Des canyons aux étoiles…</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,500;1,300&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#14110f; --panel:#1c1815; --line:#2f2823;
+  --ink:#ece5da; --dim:#a2968a; --faint:#6e645b;
+  --clay:#c96442; --gold:#d9a441;
+  --sans:'Inter',system-ui,sans-serif; --serif:'Cormorant Garamond',Georgia,serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.6;
+  background-image:radial-gradient(circle at 20% 8%, rgba(217,164,65,.05), transparent 55%);}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+header{padding:80px 0 44px;border-bottom:1px solid var(--line)}
+.kicker{font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--clay);margin-bottom:18px}
+h1{font-family:var(--serif);font-weight:300;font-size:clamp(2.4rem,5.5vw,4rem);line-height:1.08;letter-spacing:-.01em}
+h1 em{font-style:italic;color:var(--gold)}
+.lede{max-width:56ch;margin-top:20px;color:var(--dim);font-size:16px}
+.controls{position:sticky;top:0;z-index:10;background:rgba(20,17,15,.94);
+  backdrop-filter:blur(10px);border-bottom:1px solid var(--line);padding:18px 0}
+.ctrow{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+#q{flex:1;min-width:240px;background:var(--panel);border:1px solid var(--line);color:var(--ink);
+  border-radius:7px;padding:11px 14px;font:inherit;font-size:14px}
+#q:focus{outline:none;border-color:var(--clay)}
+#q::placeholder{color:var(--faint)}
+.count{font-size:13px;color:var(--faint);white-space:nowrap;font-variant-numeric:tabular-nums}
+.pills{display:flex;gap:7px;flex-wrap:wrap;margin-top:14px}
+.pill{background:transparent;border:1px solid var(--line);color:var(--dim);border-radius:999px;
+  padding:5px 13px;font:inherit;font-size:12.5px;cursor:pointer;transition:.15s}
+.pill:hover{border-color:var(--faint);color:var(--ink)}
+.pill[aria-pressed="true"]{background:var(--clay);border-color:var(--clay);color:#14110f;font-weight:500}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:16px;padding:34px 0 90px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:20px 21px;
+  display:flex;flex-direction:column;gap:9px;transition:.18s}
+.card:hover{border-color:#463a31;transform:translateY(-2px)}
+.score{font-family:var(--serif);font-size:1.42rem;font-weight:500;line-height:1.2}
+.eng{font-size:14.5px;color:var(--ink)}
+.sci{font-style:italic;color:var(--faint);font-size:13px}
+.tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:2px}
+.tag{font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--gold);
+  border:1px solid rgba(217,164,65,.28);border-radius:4px;padding:2px 7px}
+.links{display:flex;gap:8px;margin-top:auto;padding-top:14px;flex-wrap:wrap}
+.btn{flex:1;min-width:118px;text-align:center;text-decoration:none;font-size:12.5px;font-weight:500;
+  border-radius:6px;padding:8px 10px;border:1px solid var(--line);color:var(--dim);transition:.15s}
+.btn:hover{border-color:var(--clay);color:var(--clay)}
+.btn.listen{border-color:rgba(201,100,66,.4);color:var(--clay)}
+.btn.listen:hover{background:var(--clay);color:#14110f;border-color:var(--clay)}
+.empty{grid-column:1/-1;text-align:center;color:var(--faint);padding:70px 0;font-family:var(--serif);font-size:1.4rem}
+footer{border-top:1px solid var(--line);padding:34px 0 60px;color:var(--faint);font-size:13px}
+footer a{color:var(--dim)}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <div class="kicker">Rubin's Virtual Aviary</div>
+  <h1>The birds of <em>Des canyons aux étoiles…</em></h1>
+  <p class="lede">Olivier Messiaen notated birdsong from four continents into his 1974 canyon cycle. Each entry pairs the name as it appears in the score with the species behind it — and a recording, where one survives.</p>
+</div></header>
+
+<div class="controls"><div class="wrap">
+  <div class="ctrow">
+    <input id="q" type="search" placeholder="Search score name, species, or Latin binomial…" aria-label="Search birds">
+    <span class="count" id="count"></span>
+  </div>
+  <div class="pills" id="pills"></div>
+</div></div>
+
+<main class="wrap"><div class="grid" id="grid"></div></main>
+
+<footer><div class="wrap">
+  Compiled from the score of <em>Des canyons aux étoiles…</em> (1971–74). Recording links point to the Macaulay Library, All About Birds, YouTube, and other third-party archives; species identifications marked “maybe?” in the source remain unverified.
+</div></footer>
+
+<script>
+const D=[
+["Alala (Hawaii)","Hawaiian crow or ʻalalā","Corvus hawaiiensis","https://search.macaulaylibrary.org/catalog?taxonCode=hawcro&mediaType=audio","https://en.wikipedia.org/wiki/Hawaiian_crow"],
+["Apapane (Hawaii)","ʻapapane","Himatione sanguinea","https://www.hbw.com/ibc/video/apapane-himatione-sanguinea/adult-tree-foraging-and-giving-soft-calls","https://en.wikipedia.org/wiki/%CA%BBApapane"],
+["Boubou (South Africa)","Tropical boubou","Laniarius major","https://www.youtube.com/watch?v=edT9fTUnxbY","https://en.wikipedia.org/wiki/Tropical_boubou"],
+["Boubou shrike (Africa)","Southern boubou","Laniarius ferrugineus","https://www.youtube.com/watch?v=bOiomW1EiFA","https://en.wikipedia.org/wiki/Southern_boubou"],
+["Bruant à gorge blanche (Utah)","White-throated sparrow","Zonotrichia albicollis","https://www.allaboutbirds.org/guide/White-throated_Sparrow/","https://en.wikipedia.org/wiki/White-throated_sparrow"],
+["Bruant à nuque grise (USA)","American tree sparrow (maybe?)","Spizelloides arborea","https://www.allaboutbirds.org/guide/American_Tree_Sparrow","https://en.wikipedia.org/wiki/American_tree_sparrow"],
+["Casse-noix de Clark (Utah)","Clark's nutcracker","Nucifraga columbiana","https://www.allaboutbirds.org/guide/Clarks_Nutcracker","https://en.wikipedia.org/wiki/Clark%27s_nutcracker"],
+["Chouette des terriers (USA)","Burrowing owl","Athene cunicularia","https://www.allaboutbirds.org/guide/Burrowing_Owl/","https://en.wikipedia.org/wiki/Burrowing_owl"],
+["Cossyphe d'Heuglin (South Africa)","White-browed robin-chat","Cossypha heuglini","https://www.youtube.com/watch?v=kxTlYsCJP_s","https://en.wikipedia.org/wiki/White-browed_robin-chat"],
+["Dyal malgache (Madagascar)","Madagascan magpie-robin","Copsychus albospecularis","https://search.macaulaylibrary.org/catalog?taxonCode=mamrob1&mediaType=audio","https://en.wikipedia.org/wiki/Madagascan_magpie-robin"],
+["Elepaio (Hawaii)","ʻelepaio","(group of birds)","https://www.youtube.com/watch?v=7RJOZOMfL1U","https://en.wikipedia.org/wiki/%E2%80%98Elepaio"],
+["Geai bleu (USA)","Blue jay","Cyanocitta cristata","https://www.allaboutbirds.org/guide/Blue_Jay/","https://en.wikipedia.org/wiki/Blue_jay"],
+["Geai bleu de Steller (Utah)","Steller's jay","Cyanocitta stelleri","https://www.allaboutbirds.org/guide/Stellers_Jay","https://en.wikipedia.org/wiki/Cyanocitta_stelleri"],
+["Grand-Duc de Virginie (USA)","Great horned owl","Bubo virginianus","https://www.allaboutbirds.org/guide/Great_Horned_Owl","https://en.wikipedia.org/wiki/Great_horned_owl"],
+["Grive de Wilson (USA)","Veery","Catharus fuscescens","https://www.allaboutbirds.org/guide/Veery","https://en.wikipedia.org/wiki/Veery"],
+["Grive des bois (USA)","Wood thrush","Hylocichla mustelina","https://www.allaboutbirds.org/guide/Wood_Thrush","https://en.wikipedia.org/wiki/Wood_thrush"],
+["Grive ermite (USA)","Hermit thrush","Catharus guttatus","https://www.allaboutbirds.org/guide/Hermit_Thrush","https://en.wikipedia.org/wiki/Hermit_thrush"],
+["Grive grise (Australia)","Grey shrikethrush","Colluricincla harmonica","https://www.youtube.com/watch?v=gBQxs2TRLo8","https://en.wikipedia.org/wiki/Grey_shrikethrush"],
+["Grive rousse (Wyoming)","Red-throated thrush","Turdus ruficollis","https://www.youtube.com/watch?v=hr_Ze0LVcMA","https://en.wikipedia.org/wiki/Red-throated_thrush"],
+["Guiraca bleu (Utah)","Blue grosbeak","Passerina caerulea","https://www.allaboutbirds.org/guide/Blue_Grosbeak/","https://en.wikipedia.org/wiki/Blue_grosbeak"],
+["Gymnorhize flûteur à des blanc (Australia)","Australian magpie","Gymnorhina tibicen","https://wildambience.com/wildlife-sounds/australian-magpie/","https://en.wikipedia.org/wiki/Australian_magpie"],
+["Hoamy (grive-geai de Pékin) (China)","Chinese hwamei or melodious laughingthrush","Leucodioptron canorus (formerly Garrulax canorus)","https://www.youtube.com/watch?v=wBlI2Gw6imE","https://en.wikipedia.org/wiki/Chinese_hwamei"],
+["Kibitaki (Japan)","Narcissus flycatcher","Ficedula narcissina","https://search.macaulaylibrary.org/catalog?taxonCode=narfly2&mediaType=audio","https://en.wikipedia.org/wiki/Narcissus_flycatcher"],
+["Leiothrix (China)","Red-billed leiothrix or Pekin robin","Leiothrix lutea","https://www.youtube.com/watch?v=DEeuCU-0nP0","https://en.wikipedia.org/wiki/Red-billed_Leiothrix"],
+["Merle bleu des Montagnes (Western USA)","Western bluebird","Sialia mexicana","https://www.allaboutbirds.org/guide/Western_Bluebird","https://en.wikipedia.org/wiki/Western_bluebird"],
+["Merle de Swainson (USA)","Swainson's thrush","Catharus ustulatus","https://www.allaboutbirds.org/guide/Swainsons_Thrush","https://en.wikipedia.org/wiki/Swainson%27s_thrush"],
+["Merle migrateur (USA)","American robin","Turdus migratorius","https://www.allaboutbirds.org/guide/American_Robin","https://en.wikipedia.org/wiki/American_robin"],
+["Merle noir à tête jaune (Utah)","Yellow-headed blackbird","Xanthocephalus xanthocephalus","https://www.allaboutbirds.org/guide/Yellow-headed_Blackbird","https://en.wikipedia.org/wiki/Yellow-headed_Blackbird"],
+["Moqueur des armoises (Western USA)","Sage thrasher","Oreoscoptes montanus","https://www.allaboutbirds.org/guide/Sage_Thrasher","https://en.wikipedia.org/wiki/Sage_thrasher"],
+["Moqueur polyglotte (California, Utah, Wyoming)","Northern mockingbird","Mimus polyglottos","https://www.allaboutbirds.org/guide/Northern_Mockingbird/sounds","https://en.wikipedia.org/wiki/Northern_mockingbird"],
+["Oiseau lyre du Prince Albert (Australia)","Albert's lyrebird","Menura alberti","https://www.youtube.com/watch?v=P9hKXyOO2zs","https://en.wikipedia.org/wiki/Albert%27s_lyrebird"],
+["Oiseau lyre superbe (Southeast Australia)","Superb lyrebird","Menura novaehollandiae","https://www.youtube.com/watch?v=VjE0Kdfos4Y","https://en.wikipedia.org/wiki/Superb_lyrebird"],
+["Omao (Hawaii)","ʻōmaʻo or Hawaiian thrush","Myadestes obscurus","https://www.youtube.com/watch?v=52VsMtjueT4","https://en.wikipedia.org/wiki/%E2%80%98%C5%8Cma%E2%80%99o"],
+["Pape indigo (Utah)","Indigo bunting","Passerina cyanea","https://www.allaboutbirds.org/guide/Indigo_Bunting","https://en.wikipedia.org/wiki/Indigo_bunting"],
+["Pape Lazuli (USA)","Lazuli bunting","Passerina amoena","https://www.allaboutbirds.org/guide/Lazuli_Bunting","https://en.wikipedia.org/wiki/Lazuli_bunting"],
+["Pic flèche rouge (Utah)","Red-bellied woodpecker (maybe?)","Melanerpes carolinus","https://www.allaboutbirds.org/guide/Red-bellied_Woodpecker","https://en.wikipedia.org/wiki/Red-bellied_woodpecker"],
+["Pic maculé (Utah, Nevada)","Yellow-bellied sapsucker","Sphyrapicus varius","https://www.allaboutbirds.org/guide/Yellow-bellied_Sapsucker","https://en.wikipedia.org/wiki/Yellow-bellied_sapsucker"],
+["Pic-grièche à plastron noir (South Africa)","Ring ouzel","Turdus torquatus","https://www.british-birdsongs.uk/ring-ouzel/","https://en.wikipedia.org/wiki/Ring_ouzel"],
+["Pinson à ailes baies (USA)","Vesper sparrow","Pooecetes gramineus","https://www.allaboutbirds.org/guide/Vesper_Sparrow","https://en.wikipedia.org/wiki/Vesper_sparrow"],
+["Pyrrhuloxia (Arizona)","Pyrrhuloxia or desert cardinal","Cardinalis sinuatus","https://www.allaboutbirds.org/guide/Pyrrhuloxia","https://en.wikipedia.org/wiki/Pyrrhuloxia"],
+["Roselin de Cassin (Utah)","Cassin's finch","Haemorhous cassinii","https://www.allaboutbirds.org/guide/Cassins_Finch","https://en.wikipedia.org/wiki/Cassin%27s_finch"],
+["Shama (India)","White-rumped shama","Copsychus malabaricus","https://www.youtube.com/watch?v=NhRcRd9Yqsw","https://en.wikipedia.org/wiki/White-rumped_shama"],
+["Siffleur doré (Northwest Australia)","Australian golden whistler","Pachycephala pectoralis","https://wildambience.com/wildlife-sounds/australian-golden-whistler/","https://en.wikipedia.org/wiki/Australian_golden_whistler"],
+["Sirli du désert (Sahara)","Greater hoopoe lark","Alaemon alaudipes","http://www.oiseaux.net/birds/greater.hoopoe-lark.html","https://en.wikipedia.org/wiki/Greater_hoopoe-lark"],
+["Solitaire de Townsend (Western USA)","Townsend's solitaire","Myadestes townsendi","https://www.allaboutbirds.org/guide/Townsends_Solitaire/overview","https://en.wikipedia.org/wiki/Townsend%27s_solitaire"],
+["Stournelle des prés de l'Ouest (Utah)","Western meadowlark","Sturnella neglecta","https://www.allaboutbirds.org/guide/Western_Meadowlark","https://en.wikipedia.org/wiki/Western_meadowlark"],
+["Tangara de l'Ouest (Utah)","Western bluebird","Sialia mexicana","https://www.allaboutbirds.org/guide/Western_Bluebird/overview","https://en.wikipedia.org/wiki/Western_bluebird"],
+["Téléphone Tschagra (Morocco)","Black-crowned tchagra","Chagra senegalus","https://en.wikipedia.org/wiki/Black-crowned_tchagra","https://en.wikipedia.org/wiki/Black-crowned_tchagra"],
+["Tetras centrocerque (Nevada, Utah)","Greater sage-grouse","Centrocercus urophasianus","https://www.allaboutbirds.org/guide/Greater_Sage-Grouse","https://en.wikipedia.org/wiki/Greater_sage-grouse"],
+["Tetras obscur (Utah)","Dusky grouse (maybe?)","Dendragapus obscurus","https://www.youtube.com/watch?v=OLclp7rz2AM","https://en.wikipedia.org/wiki/Dusky_grouse"],
+["Tohi à queue verte (Idaho, Montana)","Green-tailed towhee","Pipilo chlorurus","https://www.allaboutbirds.org/guide/Green-tailed_Towhee/","https://en.wikipedia.org/wiki/Green-tailed_towhee"],
+["Tourterelle à ailes blanches (Utah)","White-winged dove","Zenaida asiatica","https://www.allaboutbirds.org/guide/White-winged_Dove","https://en.wikipedia.org/wiki/White-winged_dove"],
+["Troglodyte de la Caroline (USA)","Carolina wren","Thryothorus ludovicianus","https://www.allaboutbirds.org/guide/Carolina_Wren","https://en.wikipedia.org/wiki/Carolina_wren"],
+["Troglodyte des cactus (Western USA)","Cactus wren","Campylorhynchus brunneicapillus","https://www.allaboutbirds.org/guide/Cactus_Wren/","https://en.wikipedia.org/wiki/Cactus_wren"],
+["Troglodyte des canyons (Idaho, Montana)","Canyon wren","Catherpes mexicanus","https://www.allaboutbirds.org/guide/Canyon_Wren","https://en.wikipedia.org/wiki/Canyon_wren"],
+["Troupiale de Baltimore (USA)","Baltimore oriole","Icterus galbula","https://www.allaboutbirds.org/guide/Baltimore_Oriole","https://en.wikipedia.org/wiki/Baltimore_oriole"],
+["Troupiale de Bullock (Western USA)","Bullock's oriole","Icterus bullockii","https://www.allaboutbirds.org/guide/Bullocks_Oriole","https://en.wikipedia.org/wiki/Bullock%27s_oriole"],
+["Troupiale de Scott (Arizona, Utah, Nevada)","Scott's oriole","Icterus parisorum","https://www.allaboutbirds.org/guide/Scotts_Oriole/","https://en.wikipedia.org/wiki/Scott%27s_oriole"],
+["Troupiale des vergers (USA)","Orchard oriole","Icterus spurius","https://www.allaboutbirds.org/guide/Orchard_Oriole","https://en.wikipedia.org/wiki/Orchard_oriole"],
+["Troupiale Lichenstein (Western USA)","Altamira oriole","Icterus gularis","https://search.macaulaylibrary.org/catalog?taxonCode=altori&mediaType=audio","https://en.wikipedia.org/wiki/Altamira_oriole"],
+["Viréo à tête noire (Western USA)","Black-capped vireo","Vireo atricapilla","https://www.allaboutbirds.org/guide/Black-capped_Vireo","https://en.wikipedia.org/wiki/Black-capped_vireo"],
+["Viréo de Bell (Western USA)","Bell's vireo","Vireo bellii","https://www.allaboutbirds.org/guide/Bells_Vireo/","https://en.wikipedia.org/wiki/Bell%27s_vireo"],
+["Viréo Gris (Utah)","Gray vireo","Vireo vicinior","https://www.bird-sounds.net/gray-vireo/","https://en.wikipedia.org/wiki/Gray_vireo"],
+["Viréo mélodieux (Western USA)","Warbling vireo","Vireo gilvus","https://www.allaboutbirds.org/guide/Warbling_Vireo/","https://en.wikipedia.org/wiki/Warbling_vireo"]
+];
+
+const src=u=>{
+  if(!u) return "Link";
+  if(u.includes("macaulaylibrary")) return "Macaulay";
+  if(u.includes("youtube")) return "YouTube";
+  if(u.includes("allaboutbirds")) return "All About Birds";
+  if(u.includes("wikipedia")) return "Wikipedia";
+  if(u.includes("wildambience")) return "Wild Ambience";
+  if(u.includes("british-birdsongs")) return "British Birdsongs";
+  if(u.includes("bird-sounds")) return "Bird-sounds";
+  if(u.includes("oiseaux.net")) return "Oiseaux.net";
+  if(u.includes("hbw.com")) return "HBW";
+  return "Listen";
+};
+
+const birds=D.map(([score,eng,sci,song,info])=>{
+  const m=score.match(/\(([^)]+)\)\s*$/);
+  const regions=m?m[1].split(",").map(s=>s.trim()):[];
+  return{score:score.replace(/\s*\([^)]+\)\s*$/,""),eng,sci,song,info,regions,
+    hay:(score+" "+eng+" "+sci).toLowerCase()};
+});
+
+const regions=[...new Set(birds.flatMap(b=>b.regions))].sort();
+const grid=document.getElementById("grid"),
+      pills=document.getElementById("pills"),
+      count=document.getElementById("count"),
+      q=document.getElementById("q");
+let active=null;
+
+pills.innerHTML=['<button class="pill" data-r="" aria-pressed="true">All regions</button>']
+  .concat(regions.map(r=>`<button class="pill" data-r="${r}" aria-pressed="false">${r}</button>`)).join("");
+
+const esc=s=>s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+function render(){
+  const term=q.value.trim().toLowerCase();
+  const out=birds.filter(b=>(!term||b.hay.includes(term))&&(!active||b.regions.includes(active)));
+  count.textContent=`${out.length} of ${birds.length}`;
+  grid.innerHTML=out.length?out.map(b=>`
+    <article class="card">
+      <div class="score">${esc(b.score)}</div>
+      <div class="eng">${esc(b.eng)}</div>
+      <div class="sci">${esc(b.sci)}</div>
+      <div class="tags">${b.regions.map(r=>`<span class="tag">${esc(r)}</span>`).join("")}</div>
+      <div class="links">
+        <a class="btn listen" href="${esc(b.song)}" target="_blank" rel="noopener">♪ ${src(b.song)}</a>
+        <a class="btn" href="${esc(b.info)}" target="_blank" rel="noopener">${src(b.info)}</a>
+      </div>
+    </article>`).join(""):`<p class="empty">No birds match that search.</p>`;
+}
+
+q.addEventListener("input",render);
+pills.addEventListener("click",e=>{
+  const btn=e.target.closest(".pill"); if(!btn) return;
+  active=btn.dataset.r||null;
+  [...pills.children].forEach(p=>p.setAttribute("aria-pressed",p===btn));
+  render();
+});
+render();
+</script>
+</body>
+</html>
