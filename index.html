@@ -56,6 +56,12 @@ h1 em{font-style:normal;color:var(--gold)}
 .tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:2px}
 .tag{font-family:var(--display);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);
   border:1px solid rgba(217,164,65,.28);border-radius:4px;padding:2px 7px}
+.snippet{margin:12px 0 2px;display:flex;flex-direction:column;gap:6px}
+.snippet img{display:block;width:100%;border-radius:6px;border:1px solid var(--line);
+  background:#f7f3ea;transition:.18s}
+.snippet a:hover img{border-color:var(--clay)}
+.snippet figcaption{font-size:11px;letter-spacing:.03em;color:var(--faint)}
+.snippet figcaption span{font-family:var(--display);color:var(--gold);margin-right:6px}
 .links{display:flex;gap:8px;margin-top:auto;padding-top:14px;flex-wrap:wrap}
 .btn{flex:1;min-width:118px;text-align:center;text-decoration:none;font-size:12.5px;font-weight:500;
   border-radius:6px;padding:8px 10px;border:1px solid var(--line);color:var(--dim);transition:.15s}
@@ -179,11 +185,19 @@ const src=u=>{
   return "Listen";
 };
 
+// Score-excerpt snippets, keyed by Wikipedia slug → [image, movement · page].
+const SNIP={
+  "Greater_hoopoe-lark":["score-snippets/01-le-desert/sirli-du-desert_p27.png","Le désert · p. 27"],
+  "Northern_mockingbird":["score-snippets/01-le-desert/moqueur-polyglotte_p25.png","Le désert · p. 25"],
+  "Narcissus_flycatcher":["score-snippets/01-le-desert/kibitaki_p25.png","Le désert · p. 25"],
+  "Bokmakierie":["score-snippets/01-le-desert/pie-grieche-a-plastron-noir_p23.png","Le désert · p. 23"]
+};
+
 const birds=D.map(([score,eng,sci,song,info])=>{
   const m=score.match(/\(([^)]+)\)\s*$/);
   const regions=m?m[1].split(",").map(s=>s.trim()):[];
   const wiki=(info.split("/wiki/")[1]||"").split("#")[0];
-  return{score:score.replace(/\s*\([^)]+\)\s*$/,""),eng,sci,song,info,regions,wiki,
+  return{score:score.replace(/\s*\([^)]+\)\s*$/,""),eng,sci,song,info,regions,wiki,snip:SNIP[wiki]||null,
     hay:(score+" "+eng+" "+sci).toLowerCase()};
 });
 
@@ -215,6 +229,11 @@ function render(){
         </div>
       </div>
       <div class="tags">${b.regions.map(r=>`<span class="tag">${esc(r)}</span>`).join("")}</div>
+      ${b.snip?`<figure class="snippet">
+        <a href="${esc(b.snip[0])}" target="_blank" rel="noopener">
+          <img loading="lazy" src="${esc(b.snip[0])}" alt="Score excerpt — ${esc(b.eng)}, ${esc(b.snip[1])}"></a>
+        <figcaption><span>Score</span> ${esc(b.snip[1])}</figcaption>
+      </figure>`:""}
       <div class="links">
         <a class="btn listen" href="${esc(b.song)}" target="_blank" rel="noopener">♪ ${src(b.song)}</a>
         <a class="btn" href="${esc(b.info)}" target="_blank" rel="noopener">${src(b.info)}</a>
