@@ -24,6 +24,14 @@ header{padding:80px 0 44px;border-bottom:1px solid var(--line)}
 h1{font-family:var(--display);font-weight:400;font-size:clamp(1.7rem,4.4vw,3.2rem);line-height:1.22;letter-spacing:-.01em}
 h1 em{font-style:normal;color:var(--gold)}
 .lede{max-width:56ch;margin-top:20px;color:var(--dim);font-size:16px}
+.live{display:inline-flex;align-items:center;gap:12px;margin-top:26px;text-decoration:none;
+  background:rgba(201,100,66,.1);border:1px solid var(--clay);border-radius:9px;
+  padding:11px 17px;color:var(--ink);font-size:14.5px;transition:.16s}
+.live:hover{background:var(--clay);color:#14110f}
+.live span{font-family:var(--display);font-size:10.5px;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--clay);border:1px solid var(--clay);border-radius:4px;padding:3px 7px}
+.live b{color:var(--gold);font-weight:400}
+.live:hover span,.live:hover b{color:#14110f;border-color:#14110f}
 .controls{position:sticky;top:0;z-index:10;background:rgba(20,17,15,.94);
   backdrop-filter:blur(10px);border-bottom:1px solid var(--line);padding:18px 0}
 .ctrow{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
@@ -86,6 +94,8 @@ footer a{color:var(--dim)}
   <h1>The birds of <em>Des canyons aux étoiles…</em></h1>
   <p class="lede">Olivier Messiaen notated birdsong from four continents into his 1974 score. This site pairs
   the name as it appears in <i>Des canyons</i> with links to the species, field recordings, and a snippet from the score.</p>
+  <a class="live" href="https://artofelan.org/concerts/aoe-in-the-desert" target="_blank" rel="noopener">
+    <span>Live</span>See it live in the desert — October 12, 2026<b>→</b></a>
 </div></header>
 
 <div class="controls"><div class="wrap">
