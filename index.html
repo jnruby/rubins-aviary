@@ -316,8 +316,8 @@ const grid=document.getElementById("grid"),
       q=document.getElementById("q");
 let active=null;
 
-pills.innerHTML=['<button class="pill" data-r="" aria-pressed="true">All regions</button>']
-  .concat(regions.map(r=>`<button class="pill" data-r="${r}" aria-pressed="false">${r}</button>`)).join("");
+// pills.innerHTML=['<button class="pill" data-r="" aria-pressed="true">All regions</button>']
+//  .concat(regions.map(r=>`<button class="pill" data-r="${r}" aria-pressed="false">${r}</button>`)).join("");
 
 const esc=s=>s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 
