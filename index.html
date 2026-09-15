@@ -316,6 +316,7 @@ const grid=document.getElementById("grid"),
       q=document.getElementById("q");
 let active=null;
 
+//region map bubbles (didn't look good on mobile)
 // pills.innerHTML=['<button class="pill" data-r="" aria-pressed="true">All regions</button>']
 //  .concat(regions.map(r=>`<button class="pill" data-r="${r}" aria-pressed="false">${r}</button>`)).join("");
 
@@ -399,5 +400,7 @@ document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!lb.hidden)lbClose(
 
 render();
 </script>
+<script data-goatcounter="https://jnrubyrubyruby.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
 </body>
 </html>
