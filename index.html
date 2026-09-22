@@ -62,9 +62,6 @@ h1 em{font-style:normal;color:var(--gold)}
 .score{font-family:var(--display);font-size:1.12rem;font-weight:400;line-height:1.28;letter-spacing:-.01em}
 .eng{font-size:14.5px;color:var(--ink)}
 .sci{font-style:italic;color:var(--faint);font-size:13px}
-.tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:2px}
-.tag{font-family:var(--display);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);
-  border:1px solid rgba(217,164,65,.28);border-radius:4px;padding:2px 7px}
 .snippet{margin:12px 0 2px;display:flex;flex-direction:column;gap:6px}
 .snippet img{display:block;width:100%;border-radius:6px;border:1px solid var(--line);
   background:#f7f3ea;cursor:zoom-in;transition:.18s}
@@ -337,7 +334,6 @@ function render(){
           <div class="sci">${esc(b.sci)}</div>
         </div>
       </div>
-      <div class="tags">${b.regions.map(r=>`<span class="tag">${esc(r)}</span>`).join("")}</div>
       ${b.snip?`<figure class="snippet">
         <img class="snip-img" loading="lazy" src="${esc(b.snip[0])}" title="Click to enlarge"
           alt="Score excerpt — ${esc(b.eng)}, ${esc(b.snip[1])}">
